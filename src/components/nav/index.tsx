@@ -12,12 +12,12 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-import { navItems } from "@/config/marketing/nav-items";
 import { HamburgerButton } from "./hamburger-button";
 import { MobileMenu } from "./mobile-menu";
 import { NavButtons } from "./nav-buttons";
 import { Logo } from "../logo";
 import { useSelectedLayoutSegment } from "next/navigation";
+import { marketingConfig } from "@/config/marketing-config";
 
 export const Nav = () => {
   const [open, setOpen] = React.useState(false);
@@ -25,14 +25,14 @@ export const Nav = () => {
 
   return (
     <div className="sticky top-0 z-40 transform border-b">
-      <div className="bg-background absolute inset-0 h-full w-full opacity-80" />
+      <div className="absolute inset-0 h-full w-full bg-background opacity-80" />
       <div className="relative mx-auto flex h-16 items-center justify-between backdrop-blur-sm lg:container lg:px-24 xl:px-36">
         <div className="flex flex-1 items-center justify-between px-6 sm:items-stretch lg:px-0">
           <div className="flex items-center gap-8">
             <Logo />
             <NavigationMenu className="relative z-40 hidden items-center transition-opacity lg:flex">
               <NavigationMenuList className="flex gap-4">
-                {navItems.map((menuItem) => (
+                {marketingConfig.map((menuItem) => (
                   <NavigationMenuItem
                     className="text-sm font-medium"
                     key={menuItem.label}
@@ -61,7 +61,7 @@ export const Nav = () => {
         </div>
         <HamburgerButton toggleFlyOut={() => setOpen(true)} />
       </div>
-      <MobileMenu open={open} setOpen={setOpen} navItems={navItems} />
+      <MobileMenu open={open} setOpen={setOpen} navItems={marketingConfig} />
     </div>
   );
 };
@@ -76,13 +76,13 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className,
           )}
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
         </a>

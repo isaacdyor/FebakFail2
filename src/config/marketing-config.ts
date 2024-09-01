@@ -1,4 +1,4 @@
-export const navItems = [
+export const marketingConfig = [
   {
     label: "Product",
     url: "/product",

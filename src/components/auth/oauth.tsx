@@ -30,7 +30,7 @@ export const OAuthProviders: React.FC = () => {
       await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: `${location.origin}/auth/callback?next=/dashboard`,
+          redirectTo: `${location.origin}/auth/callback?next=/chat`,
         },
       });
     } catch (error) {
