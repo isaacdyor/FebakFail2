@@ -1,3 +1,5 @@
+"use client";
+
 export default function ProductPage() {
-  return <p>Product</p>;
+  return <p>hi</p>;
 }

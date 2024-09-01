@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { createBrowserClient } from "@supabase/ssr";
+import { User } from "@supabase/supabase-js";
 
 export function createClient() {
   return createBrowserClient(

@@ -26,15 +26,14 @@ export const OAuthProviders: React.FC = () => {
   const supabase = createClient();
 
   const handleLogin = async (provider: Provider) => {
-    try {
-      await supabase.auth.signInWithOAuth({
-        provider: provider,
-        options: {
-          redirectTo: `${location.origin}/auth/callback?next=/chat`,
-        },
-      });
-    } catch (error) {
-      console.error("Error signing in:", error);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: provider,
+      options: {
+        redirectTo: `${location.origin}/auth/callback?next=/chat`,
+      },
+    });
+    if (error) {
+      console.error("OAuth error", error);
     }
   };
 
