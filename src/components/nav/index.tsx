@@ -1,0 +1,86 @@
+"use client";
+
+import Link from "next/link";
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+
+import { navItems } from "@/components/nav/items";
+import { HamburgerButton } from "./hamburger-button";
+import { MobileMenu } from "./mobile-menu";
+import { NavButtons } from "./nav-buttons";
+import { Logo } from "../logo";
+
+export const Nav = () => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div className="sticky top-0 z-40 transform border-b">
+      <div className="bg-background absolute inset-0 h-full w-full opacity-80" />
+      <div className="relative mx-auto flex h-16 items-center justify-between backdrop-blur-sm lg:container lg:px-24 xl:px-36">
+        <div className="flex flex-1 items-center justify-between px-6 sm:items-stretch lg:px-0">
+          <div className="flex items-center gap-8">
+            <Logo />
+            <NavigationMenu className="relative z-40 hidden items-center transition-opacity lg:flex">
+              <NavigationMenuList className="flex gap-4">
+                {navItems.map((menuItem) => (
+                  <NavigationMenuItem
+                    className="text-sm font-medium"
+                    key={menuItem.label}
+                  >
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={menuItem.url}
+                        className="focus-visible:text-brand-link text-foreground group-hover:bg-transparent"
+                      >
+                        {menuItem.label}
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          <div className="hidden items-center gap-2 lg:flex">
+            <NavButtons />
+          </div>
+        </div>
+        <HamburgerButton toggleFlyOut={() => setOpen(true)} />
+      </div>
+      <MobileMenu open={open} setOpen={setOpen} navItems={navItems} />
+    </div>
+  );
+};
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+            className,
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
