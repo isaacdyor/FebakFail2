@@ -7,6 +7,8 @@ import { DEFAULT_EASE } from "@/lib/framer";
 import { NavButtons } from "./nav-buttons";
 import { X } from "lucide-react";
 import { Logo } from "../logo";
+import { cn } from "@/lib/utils";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 interface MenuItemType {
   label: string;
@@ -20,6 +22,8 @@ interface Props {
 }
 
 export const MobileMenu = ({ open, setOpen, navItems }: Props) => {
+  const segment = useSelectedLayoutSegment();
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -44,8 +48,11 @@ export const MobileMenu = ({ open, setOpen, navItems }: Props) => {
         <m.div variants={listItem} key={menuItem.label}>
           <Link
             href={menuItem.url}
-            onClick={() => setOpen(false)}
-            className="hover:bg-background/10 text-foreground block py-1.5 pl-3 pr-4 text-base font-medium"
+            onMouseDown={() => setOpen(false)}
+            className={cn(
+              "hover:bg-background/10 text-muted-foreground block py-1.5 pl-3 pr-4 text-base font-medium",
+              menuItem.url.startsWith(`/${segment}`) ? "text-foreground" : "",
+            )}
           >
             {menuItem.label}
           </Link>
@@ -68,7 +75,7 @@ export const MobileMenu = ({ open, setOpen, navItems }: Props) => {
             <div className="bg-overlay before:content[''] before:from-background-overlay absolute left-0 top-0 z-50 flex h-16 w-screen items-center justify-between px-6 before:absolute before:inset-0 before:top-full before:h-3 before:w-full before:bg-gradient-to-b before:to-transparent">
               <Logo />
               <button
-                onClick={() => setOpen(false)}
+                onMouseDown={() => setOpen(false)}
                 type="button"
                 className="text-foreground-lighter focus:ring-brand bg-surface-100 hover:bg-surface-200 inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset"
               >

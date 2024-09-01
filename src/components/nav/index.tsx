@@ -12,14 +12,16 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-import { navItems } from "@/components/nav/items";
+import { navItems } from "@/config/marketing/nav-items";
 import { HamburgerButton } from "./hamburger-button";
 import { MobileMenu } from "./mobile-menu";
 import { NavButtons } from "./nav-buttons";
 import { Logo } from "../logo";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 export const Nav = () => {
   const [open, setOpen] = React.useState(false);
+  const segment = useSelectedLayoutSegment();
 
   return (
     <div className="sticky top-0 z-40 transform border-b">
@@ -38,7 +40,12 @@ export const Nav = () => {
                     <NavigationMenuLink asChild>
                       <Link
                         href={menuItem.url}
-                        className="focus-visible:text-brand-link text-foreground group-hover:bg-transparent"
+                        className={cn(
+                          "focus-visible:text-brand-link text-muted-foreground group-hover:bg-transparent",
+                          menuItem.url.startsWith(`/${segment}`)
+                            ? "text-foreground"
+                            : "",
+                        )}
                       >
                         {menuItem.label}
                       </Link>

@@ -8,7 +8,7 @@ type HamburgerButtonProps = {
 export const HamburgerButton = (props: HamburgerButtonProps) => (
   <div
     className="inset-y-0 mr-2 flex items-center px-4 lg:hidden"
-    onClick={() => props.toggleFlyOut()}
+    onMouseDown={() => props.toggleFlyOut()}
   >
     <button
       className={cn(
