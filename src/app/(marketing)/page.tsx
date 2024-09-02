@@ -1,18 +1,25 @@
-import Link from "next/link";
+"use client";
 
-import { LatestPost } from "@/components/post";
-import { api, HydrateClient } from "@/trpc/server";
-import { createClient } from "@/lib/supabase/server";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
+export default function Home() {
+  const [visitorId, setVisitorId] = useState<string | null>(null);
 
-  void api.post.getLatest.prefetch();
-  const supabase = createClient();
+  useEffect(() => {
+    // Access localStorage only after component mounts
+    const storedVisitorId = localStorage.getItem("visitorId");
+    setVisitorId(storedVisitorId);
+  }, []);
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  if (visitorId === null) {
+    // Still loading or visitor ID not found
+    return <div>Loading...</div>;
+  }
 
-  return <p>email: {session?.user.email}</p>;
+  return (
+    <div>
+      <Button>{visitorId}</Button>
+    </div>
+  );
 }

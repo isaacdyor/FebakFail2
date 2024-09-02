@@ -6,24 +6,43 @@ import {
   text,
   timestamp,
   uuid,
-  varchar,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { type z } from "zod";
 
 export const createTable = pgTableCreator((name) => `${name}`);
+
+export const visitors = createTable("visitor", {
+  id: uuid("id").primaryKey().notNull(),
+  userId: uuid("user_id").notNull(),
+  name: text("name"),
+  active: boolean("active").notNull().default(true),
+  currentPage: text("current_page"),
+  lastSeen: timestamp("last_seen", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export const insertVisitor = createInsertSchema(visitors);
+export const selectVisitor = createSelectSchema(visitors);
+export type Visitor = z.infer<typeof selectVisitor>;
 
 export const conversations = createTable(
   "conversation",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id").notNull(),
-    recipientId: uuid("recipient_id").notNull(),
-    recipientName: varchar("recipient_name"),
+    visitorId: uuid("visitor_id")
+      .notNull()
+      .references(() => visitors.id),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
+      () => sql`CURRENT_TIMESTAMP`,
     ),
   },
   (conversation) => ({

@@ -1,7 +1,7 @@
 // src/components/pages/home-page.tsx
 "use client";
 
-import { useUser } from "@/hooks/user-provider";
+import { useUser } from "@/hooks/use-user";
 
 export default function SettingsPage() {
   const { user } = useUser();
