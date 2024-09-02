@@ -1,36 +1,58 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   pgTableCreator,
-  serial,
+  text,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `febak_${name}`);
+export const createTable = pgTableCreator((name) => `${name}`);
 
-export const posts = createTable(
-  "post",
+export const conversations = createTable(
+  "conversation",
   {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id").notNull(),
+    recipientId: uuid("recipient_id").notNull(),
+    recipientName: varchar("recipient_name"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+  (conversation) => ({
+    userIdIndex: index("user_id_idx").on(conversation.userId),
+  }),
 );
+
+export const insertConversation = createInsertSchema(conversations);
+export const selectConversation = createSelectSchema(conversations);
+
+export const messages = createTable(
+  "message",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    conversationId: uuid("conversation_id")
+      .notNull()
+      .references(() => conversations.id),
+    content: text("content").notNull(),
+    sentByUser: boolean("sent_by_user").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (message) => ({
+    conversationIdIndex: index("conversation_id_idx").on(
+      message.conversationId,
+    ),
+  }),
+);
+
+export const insertMessage = createInsertSchema(messages);
+export const selectMessage = createSelectSchema(messages);

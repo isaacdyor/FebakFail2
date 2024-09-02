@@ -14,7 +14,7 @@ export const Sidebar: React.FC = () => {
   const segment = useSelectedLayoutSegment();
 
   return (
-    <div className="flex h-screen w-64 flex-col justify-between border-r p-4">
+    <div className="flex h-screen w-60 flex-col justify-between border-r p-4">
       <div className="flex flex-col gap-8">
         <Logo />
         <div className="flex flex-col gap-1">

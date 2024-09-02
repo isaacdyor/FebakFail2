@@ -1,7 +1,5 @@
+import { Chat } from "@/features/chat";
+
 export default function ChatPage() {
-  return (
-    <div>
-      <p>hiiiiiiiii</p>
-    </div>
-  );
+  return <Chat />;
 }

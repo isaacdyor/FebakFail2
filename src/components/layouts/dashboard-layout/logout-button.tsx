@@ -1,11 +1,20 @@
 import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export const LogoutButton = () => {
   const supabase = createClient();
+  const router = useRouter();
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout error:", error.message);
+    } else {
+      router.push("/");
+    }
   };
+
   return (
     <div
       onClick={handleLogout}

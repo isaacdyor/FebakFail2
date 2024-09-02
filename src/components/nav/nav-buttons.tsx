@@ -37,7 +37,7 @@ export const NavButtons: React.FC<{ isOpen?: boolean }> = ({ isOpen }) => {
               !isOpen ? "lg:w-auto lg:text-xs" : "null",
             )}
           >
-            Sign Up
+            Get started
           </Link>
         </>
       )}
