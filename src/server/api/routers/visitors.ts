@@ -63,4 +63,9 @@ export const visitorsRouter = createTRPCRouter({
 
       return updatedVisitor;
     }),
+
+  doSomething: publicProcedure.mutation(async ({ input, ctx }) => {
+    console.log(ctx.user?.id);
+    return "hi";
+  }),
 });

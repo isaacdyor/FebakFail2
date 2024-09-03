@@ -52,6 +52,7 @@ export const conversations = createTable(
 
 export const insertConversation = createInsertSchema(conversations);
 export const selectConversation = createSelectSchema(conversations);
+export type Conversation = z.infer<typeof selectConversation>;
 
 export const messages = createTable(
   "message",
