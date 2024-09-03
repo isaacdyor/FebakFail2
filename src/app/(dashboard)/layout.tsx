@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
+import { UserProvider } from "@/features/auth/auth-provider";
 import { getUser } from "@/lib/supabase/server";
-import { UserProvider } from "@/providers/auth-provider";
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = async ({
   children,

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { OAuthProviders } from "@/components/auth/oauth";
+import { OAuthProviders } from "@/features/auth/components/oauth";
 
 const registerSchema = z.object({
   email: z.string().email(),

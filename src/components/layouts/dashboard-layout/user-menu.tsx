@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/popover";
 import { EllipsisIcon } from "lucide-react";
 import { LogoutButton } from "./logout-button";
-import { useUser } from "@/hooks/use-user";
+import { useUser } from "@/features/auth/use-user";
 
 export const UserMenu = () => {
   const { user } = useUser();

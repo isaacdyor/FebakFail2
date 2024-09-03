@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -8,7 +8,6 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { type z } from "zod";
 
 export const createTable = pgTableCreator((name) => `${name}`);
 
@@ -26,9 +25,15 @@ export const visitors = createTable("visitor", {
     .notNull(),
 });
 
+export const visitorRelations = relations(visitors, ({ one }) => ({
+  conversation: one(conversations, {
+    fields: [visitors.id],
+    references: [conversations.visitorId],
+  }),
+}));
+
 export const insertVisitor = createInsertSchema(visitors);
 export const selectVisitor = createSelectSchema(visitors);
-export type Visitor = z.infer<typeof selectVisitor>;
 
 export const conversations = createTable(
   "conversation",
@@ -50,9 +55,19 @@ export const conversations = createTable(
   }),
 );
 
+export const conversationRelations = relations(
+  conversations,
+  ({ one, many }) => ({
+    visitor: one(visitors, {
+      fields: [conversations.visitorId],
+      references: [visitors.id],
+    }),
+    messages: many(messages),
+  }),
+);
+
 export const insertConversation = createInsertSchema(conversations);
 export const selectConversation = createSelectSchema(conversations);
-export type Conversation = z.infer<typeof selectConversation>;
 
 export const messages = createTable(
   "message",
@@ -73,6 +88,13 @@ export const messages = createTable(
     ),
   }),
 );
+
+export const messageRelations = relations(messages, ({ one }) => ({
+  conversation: one(conversations, {
+    fields: [messages.conversationId],
+    references: [conversations.id],
+  }),
+}));
 
 export const insertMessage = createInsertSchema(messages);
 export const selectMessage = createSelectSchema(messages);

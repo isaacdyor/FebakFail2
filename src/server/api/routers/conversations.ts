@@ -12,7 +12,6 @@ export const conversationsRouter = createTRPCRouter({
     .input(insertConversation)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(conversations).values({
-        id: input.id,
         userId: input.userId,
         visitorId: input.visitorId,
       });
@@ -22,6 +21,9 @@ export const conversationsRouter = createTRPCRouter({
     const activeVisitors = await ctx.db.query.conversations.findMany({
       where: and(eq(conversations.userId, ctx.user.id)),
       orderBy: (visitors, { desc }) => [desc(visitors.createdAt)],
+      with: {
+        visitor: true,
+      },
     });
 
     return activeVisitors.length > 0 ? activeVisitors : null;

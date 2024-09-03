@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import type { Provider } from "@supabase/supabase-js";
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
 
 type OAuthProvider = {
   name: Provider;

@@ -1,5 +1,5 @@
-import { Chat } from "@/features/chat";
-import { ChatProvider } from "@/providers/chat-provider";
+import { Chat } from "@/features/chat/components";
+import { ChatStoreProvider } from "@/features/chat/chat-provider";
 import { api } from "@/trpc/server";
 
 export default async function ChatPage() {
@@ -7,8 +7,11 @@ export default async function ChatPage() {
   const conversations = (await api.conversations.getAll()) ?? [];
 
   return (
-    <ChatProvider activeVisitors={activeVisitors} conversations={conversations}>
+    <ChatStoreProvider
+      activeVisitors={activeVisitors}
+      conversations={conversations}
+    >
       <Chat />
-    </ChatProvider>
+    </ChatStoreProvider>
   );
 }
