@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 
 import { VisitorTracker } from "@/providers/visitor-provider";
 import { TRPCReactProvider } from "@/trpc/react";
+import Trial from "@/components/trial";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -19,8 +20,10 @@ export default async function RootLayout({
     <html lang="en" className={`${GeistSans.variable} dark`}>
       <body>
         <TRPCReactProvider>
-          <VisitorTracker />
-          {children}
+          <Trial />
+          {/* <VisitorTracker />
+            
+          {children} */}
         </TRPCReactProvider>
       </body>
     </html>

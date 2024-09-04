@@ -38,7 +38,7 @@ export const useAutosizeTextArea = ({
         textAreaRef.style.height = `${scrollHeight + offsetBorder}px`;
       }
     }
-  }, [textAreaRef, triggerAutoSize]);
+  }, [init, maxHeight, minHeight, textAreaRef, triggerAutoSize]);
 };
 
 export type AutosizeTextAreaRef = {
@@ -59,7 +59,7 @@ export const AutosizeTextarea = React.forwardRef<
   (
     {
       maxHeight = Number.MAX_SAFE_INTEGER,
-      minHeight = 10,
+      minHeight = 52,
       className,
       onChange,
       value,
@@ -78,7 +78,7 @@ export const AutosizeTextarea = React.forwardRef<
     });
 
     useImperativeHandle(ref, () => ({
-      textArea: textAreaRef.current as HTMLTextAreaElement,
+      textArea: textAreaRef.current!,
       focus: () => textAreaRef.current?.focus(),
       maxHeight,
       minHeight,

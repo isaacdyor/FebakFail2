@@ -10,15 +10,17 @@ export const DetailMenu = () => {
   const [isFocused, setIsFocused] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const setDetailInputRef = useChatStore((state) => state.setDetailInputRef);
+  const setNewConversationInputRef = useChatStore(
+    (state) => state.setNewConversationInputRef,
+  );
 
   const activeVisitors = useChatStore((state) => state.activeVisitors);
   const activeConversation = useChatStore((state) => state.activeConversation);
 
   useEffect(() => {
-    setDetailInputRef(inputRef);
-    return () => setDetailInputRef(null);
-  }, [setDetailInputRef]);
+    setNewConversationInputRef(inputRef);
+    return () => setNewConversationInputRef(null);
+  }, [setNewConversationInputRef]);
 
   return (
     <div className="relative">

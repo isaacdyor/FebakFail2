@@ -1,8 +1,7 @@
 "use client";
 
 import { Sidebar } from "./sidebar";
-import { useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { Topbar } from "./topbar";
 
 export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -10,7 +9,10 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({
   return (
     <div className="flex">
       <Sidebar />
-      {children}
+      <div className="flex w-full flex-col">
+        <Topbar />
+        {children}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { ConversationList } from "./conversation-list";
 
 export const Chat = () => {
   return (
-    <div className="flex w-full">
+    <div className="flex h-full w-full">
       <ConversationList />
       <ConversationDetail />
     </div>

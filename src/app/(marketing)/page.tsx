@@ -1,25 +1,25 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { api } from "@/trpc/react";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid"; // Make sure to install the uuid package
 
 export default function Home() {
-  const [visitorId, setVisitorId] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Access localStorage only after component mounts
-    const storedVisitorId = localStorage.getItem("visitorId");
-    setVisitorId(storedVisitorId);
-  }, []);
-
-  if (visitorId === null) {
-    // Still loading or visitor ID not found
-    return <div>Loading...</div>;
-  }
-
+  const createVisitor = api.visitors.create.useMutation();
   return (
     <div>
-      <Button>{visitorId}</Button>
+      <p>hi</p>
+      <Button
+        onClick={async () =>
+          await createVisitor.mutateAsync({
+            id: uuidv4(),
+            userId: uuidv4(),
+          })
+        }
+      >
+        Hello
+      </Button>
     </div>
   );
 }
